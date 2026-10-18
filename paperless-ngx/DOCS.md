@@ -44,6 +44,8 @@ For URL dedicated to paperless you'll have to set `url` in configuration tab of 
 
 For API you'll need to enable _direct access_ to the Add-on by setting up a port under network in configuration tab
 
+Without it, only Home Assistant itself can use the API at `http://<add-on hostname>/api` (e.g. for a REST sensor), with a token. Other add-ons should use `http://<add-on hostname>:8000/api` (see the hostnames below).
+
 ## Configuration
 
 **Note**: _Remember to restart the add-on when the configuration is changed._
@@ -189,6 +191,7 @@ PAPERLESS_PROXY_SSL_HEADER=["HTTP_X_FORWARDED_PROTO","https"]
 >
 > - Edge repository: `http://44849f5f-paperless-ngx:8000`
 > - Stable repository: `http://ca5234a0-paperless-ngx:8000`
+> - This fork, added as `https://github.com/edwinspies/paperless-home-assistant-addon`: `http://f5611a8b-paperless-ngx:8000`
 
 ### More personalisation
 
