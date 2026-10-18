@@ -32,13 +32,9 @@ Another way is to make a copy of the `data` and `media` directories.
 
 ## CSRF Validation Failled
 
-There is a validation of domain name used for some requests, those domains are extracted from Internal URL, External URL and Hostname of home assistant.
+There is a validation of domain name used for some requests. The add-on trusts the hostname and IP addresses of Home Assistant, and Ingress always works.
 
-You can find those settings in the network configuration of Home Assistant
-
-[![Open your Home Assistant instance and manage your systems network configuration.](https://my.home-assistant.io/badges/network.svg)](https://my.home-assistant.io/redirect/network/)
-
-When set to automatic, those settings cannot be resolved by the Add-on therefore you might need to setup your Internal and External URL manually
+The Internal and External URL of Home Assistant are not read automatically: that would require giving the add-on full access to the Home Assistant API. If you open Paperless-ngx directly (not through Ingress) with one of those URLs or any other domain, add its hostname with the `csrf_allowed` option.
 
 ### Reverse Proxy and dedicated URL
 
@@ -75,7 +71,7 @@ https://paperless-ngx.readthedocs.io/en/latest/configuration.html?highlight=pape
 
 ### Option: `csrf_allowed`
 
-Used to add domains to`PAPERLESS_CSRF_TRUSTED_ORIGINS`
+Used to add domains to `PAPERLESS_CSRF_TRUSTED_ORIGINS`. Enter hostnames only, without `http://` (e.g. `paperless.example.com`).
 
 https://paperless-ngx.readthedocs.io/en/latest/configuration.html?highlight=paperless_url#hosting-security
 

@@ -1,4 +1,9 @@
 ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base:9.5.0
+
+# Pinned uv binary (same version as upstream Paperless-ngx), instead of piping
+# a remote install script into a shell
+FROM ghcr.io/astral-sh/uv:0.12.23@sha256:61d393e44e249f2e4b526b6c7ddcecce245946826e608e11c93ad4f5bba55b21 AS uv
+
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -111,6 +116,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONWARNINGS="ignore:::django.http.response:517" \
     PNGX_CONTAINERIZED=1
 
+COPY --from=uv /uv /uvx /usr/local/bin/
+
 # Install basic runtime packages.
 # These change very infrequently
 # hadolint ignore=DL3003,DL3042,DL3008,SC2086
@@ -131,8 +138,6 @@ RUN --mount=type=cache,target=/root/.cache/uv/,id=uv-cache \
         && dpkg --install ./jbig2enc_${JBIG2ENC_VERSION}-1_${TARGETARCH}.deb \
   && echo "Installing supervisor" \
   && rm /usr/lib/python3.13/EXTERNALLY-MANAGED \
-  && curl -LsSf https://astral.sh/uv/install.sh | sh \
-  && source $HOME/.local/bin/env \
   && uv pip install --system --upgrade --no-cache-dir supervisor==4.2.5 \
   && echo "Download Paperless-ngx" \
   && curl -J -L -s -o paperless.tar.xz https://github.com/paperless-ngx/paperless-ngx/releases/download/${PAPERLESS_VERSION}/paperless-ngx-${PAPERLESS_VERSION}.tar.xz \
@@ -159,7 +164,6 @@ RUN --mount=type=cache,target=/root/.cache/uv/,id=uv-cache \
   && echo "Installing build system packages" \
   && apt-get update \
   && apt-get install --yes --quiet --no-install-recommends ${BUILD_PACKAGES} \
-  && source $HOME/.local/bin/env \
   && uv pip install --system --no-cache-dir --upgrade wheel \
   && echo "Installing Python requirements" \
   && uv export --quiet --no-dev --all-extras --format requirements-txt --output-file requirements.txt \

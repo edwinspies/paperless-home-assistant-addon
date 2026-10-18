@@ -65,8 +65,11 @@ else:
     esac
 fi
 
+# Only the add-on's own NGINX talks to this server, and it may trust the
+# remote-user header (SSO), so never listen beyond loopback
+export GRANIAN_HOST="127.0.0.1"
+
 # Translate between things, preferring GRANIAN_
-export GRANIAN_HOST=${GRANIAN_HOST:-${PAPERLESS_BIND_ADDR:-"::"}}
 export GRANIAN_PORT=${GRANIAN_PORT:-${PAPERLESS_PORT:-8001}}
 export GRANIAN_WORKERS=${GRANIAN_WORKERS:-${PAPERLESS_WEBSERVER_WORKERS:-1}}
 

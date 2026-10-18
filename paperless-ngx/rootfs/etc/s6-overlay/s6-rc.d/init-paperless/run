@@ -44,12 +44,12 @@ port=$(bashio::jq "$result" ".data.port")
 addon_port=$(bashio::app.port 80)
 
 # Get all possible URLs
-result=$(bashio::api.supervisor GET /core/api/config true || true)
+# Home Assistant's internal/external URLs are not read here: that needs the
+# homeassistant_api permission, which grants full control of Home Assistant.
+# Add those hostnames with the csrf_allowed option instead.
 urls+=("ingress.local")
 urls+=("$(bashio::info.hostname).local")
 urls+=("$(bashio::info.hostname)")
-urls+=("$(bashio::jq "$result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)")
-urls+=("$(bashio::jq "$result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)")
 
 # Get supported interfaces
 for interface in $(bashio::network.interfaces); do
@@ -63,14 +63,6 @@ if bashio::config.has_value 'csrf_allowed'; then
     while read -r line; do
         urls+=("$line")
     done <<< "$(bashio::config 'csrf_allowed')"
-fi
-
-# Add internal and external URL as it
-if [[ "$(bashio::jq "$result" '.external_url')" != "null" ]]; then
-    CSRF=$(bashio::jq "$result" '.external_url')
-fi
-if [[ "$(bashio::jq "$result" '.internal_url')" != "null" ]]; then
-    CSRF=$(bashio::jq "$result" '.internal_url'),${CSRF}
 fi
 
 # Loop through URls to add them in the CSRF string

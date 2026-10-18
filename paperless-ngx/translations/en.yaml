@@ -5,7 +5,9 @@ configuration:
     description: You can set the value of PAPERLESS_URL manually
   csrf_allowed:
     name: CSRF Allowed domains
-    description: List of domains you want to manually add to CSRD_ALLOWED
+    description: >-
+      Hostnames (without http://) to trust for CSRF, e.g. those of your Home
+      Assistant internal and external URL
   filename:
     name: Filename
     description: Default file format

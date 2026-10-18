@@ -16,9 +16,24 @@
 
 Paperless is an application that manages your personal documents. With the help of a document scanner, paperless transforms your wieldy physical document binders into a searchable archive and provides many utilities for finding and managing your documents.
 
-This repository is a custom addon to run paperless-ngx in Home Assistant. Click the button below to install it.
+This repository is a custom addon to run paperless-ngx in Home Assistant.
 
-## Installation
+## Installing this fork (built locally)
+
+This fork has no prebuilt image: Home Assistant builds it on your device from
+this repository's `Dockerfile`, so you run the code you can read here. The
+first build takes a long time and needs several GB of free disk space.
+
+1. In Home Assistant, open the add-on store, then the ⋮ menu → **Repositories**.
+1. Add `https://github.com/edwinspies/paperless-home-assistant-addon`
+   (append `#<branch>` to use a branch other than `main`).
+1. Install the "Paperless-ngx" add-on from that repository and start it.
+
+Changes to this repository are never installed automatically: after updating
+it, click **Check for updates** in the add-on store, then **Rebuild** on the
+add-on page.
+
+## Installation of the original add-on (prebuilt image)
 
 The installation of this add-on is pretty straightforward and not different in
 comparison to installing any other Home Assistant add-on.

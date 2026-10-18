@@ -5,7 +5,7 @@ server {
 
     location / {
         # Adjust host and port as required.
-        proxy_pass http://localhost:8001/;
+        proxy_pass http://127.0.0.1:8001/;
 
         # Allow long-running requests such as local AI inference to complete.
         # Keep the proxy timeout slightly above Paperless' default LLM request timeout.

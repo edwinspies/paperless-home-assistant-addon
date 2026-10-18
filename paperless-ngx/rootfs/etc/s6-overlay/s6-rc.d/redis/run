@@ -6,4 +6,5 @@
 # ==============================================================================
 
 exec 2>&1
-redis-server
+# Started without a config file, so bind to loopback explicitly
+exec redis-server --bind 127.0.0.1 -::1 --protected-mode yes
